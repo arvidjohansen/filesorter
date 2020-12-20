@@ -27,8 +27,6 @@ extensions = [
     'zip',
 ]
 
-
-
 def create_directories():
 
     count_dict = defaultdict(int)
@@ -45,13 +43,15 @@ def create_directories():
             except FileExistsError:
                 print('Directory %s already exists, skipping' % ext)
 
-
 def move_files():
+    num_files_moved = 0
     for f in files:
         for e in extensions:
-            if f.endswith('.' + e):
+            if f.lower().endswith('.' + e):
                 os.rename(f, e + '/' + f)
+                num_files_moved += 1
                 print('Successfully moved file %s to directory %s' % ((f,e)))
+    return num_files_moved
 
 files = os.listdir()
 print('Found %s files' % len(files))
@@ -60,4 +60,7 @@ ans = input('Create directories? (y/n)\n')
 if ans.lower() == 'y': create_directories() 
 
 ans = input('Move files into directories? (y/n)\n')
-if ans.lower() == 'y': move_files()
+if ans.lower() == 'y':
+    total_files_moved = move_files()
+
+input('Finished moving %s files!' % total_files_moved)
