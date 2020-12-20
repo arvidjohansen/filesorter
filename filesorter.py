@@ -1,7 +1,6 @@
 
 import os
-from collections import defaultdict 
-from pprint import pprint as p
+from collections import defaultdict
 
 extensions = [
     'csv',
@@ -28,9 +27,12 @@ extensions = [
     'zip',
 ]
 
-count_dict = defaultdict(int)
+
+
 def create_directories():
-    files = os.listdir()
+
+    count_dict = defaultdict(int)
+
     for f in files:
         for e in extensions:
             if f.endswith('.' + e):
@@ -39,28 +41,23 @@ def create_directories():
         if count > 0:
             try:
                 os.mkdir(ext)
-                print("Created directory for %s" % ext)
+                print('Directory %s created' % ext)
             except FileExistsError:
-                print("Directory %s already exists, skipping" % ext)
-create_directories()
-
-
-
-p(count_dict)
-
-
-files = os.listdir()
+                print('Directory %s already exists, skipping' % ext)
 
 
 def move_files():
     for f in files:
         for e in extensions:
-            if f.endswith('.'+e):
-                os.rename(f,e+'/'+f)
-                print("Successfully moved file %s to directory %s" % ((f,e)))
+            if f.endswith('.' + e):
+                os.rename(f, e + '/' + f)
+                print('Successfully moved file %s to directory %s' % ((f,e)))
 
-ans = input("Moving files into directories. Continue? (y/n)\n")
-if ans.lower() == 'y':
-    move_files()
-else:
-    print("Exiting...")
+files = os.listdir()
+print('Found %s files' % len(files))
+
+ans = input('Create directories? (y/n)\n')
+if ans.lower() == 'y': create_directories() 
+
+ans = input('Move files into directories? (y/n)\n')
+if ans.lower() == 'y': move_files()
